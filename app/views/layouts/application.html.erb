@@ -8,7 +8,22 @@
 </head>
 <body>
 
+<% if flash[:alert] %>
+  <p class="flash-error"><%= flash[:alert] %></p>
+<% end %>
+<% if flash[:notice] %>
+  <p class="flash-notice"><%= flash[:notice] %></p>
+<% end %>
+
 <%= yield %>
+
+<div class="sidebar two columns">
+  <nav>
+    <ul>
+      <li><%= link_to "New post...", new_post_path %></li>
+    </ul>
+  </nav>
+</div>
 
 </body>
 </html>

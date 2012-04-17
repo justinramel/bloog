@@ -1,0 +1,86 @@
+SUBMITTING POSTS
+
+View -> Controller
+
+No longer using generators!
+
+Using ActiveModel
+=================
+
+extend ActiveModel::Naming
+include ActiveModel::Conversion
+
+def persisted?
+  false
+end
+
+Without these settings you get the following error on web page:
+
+undefined method `model_name' for Post:Class
+
+with modules included the post tests give the error:
+
+uninitialized constant Post::ActiveModel
+
+With require 'active_record'
+Finished in 0.000845 seconds.
+
+???? Still pretty fast!
+
+
+???? I'm not seeing the Notice messages????
+
+
+????? Aggregate root? ?????
+
+This pattern has some attractive properties. Having “parent” (I use the term loosely) objects mediate access to “child” objects gives us a natural “seam” in our design. At the seam, we can do a number of things:
+
+
+1. Control access based on authorization information—as we saw in “*Posts vs. Entries.
+??????
+2. Pre-load child objects with a reference back to their parent. The #new_post method above does this, enabling the post object to pub- lish itself.
+?????? Anthony a valid reason for the post_source pattern?
+
+
+3. Save a reference to the child object in the parent. ActiveRecord’s autosave facility does this. When we are careful to access child objects from the parent, ActiveRecord is able to persist all new, modified, or deleted child objects automatically when the parent object is saved.
+4. Decide the actual class of the object to be instantiated, based on the parameters or the state of the parent.
+
+
+Lone wolf instantiations
+The Rob Booth of objects?
+
+
+Getting the tests running again
+===============================
+
+def stub_module(full_name)
+  full_name.to_s.split(/::/).inject(Object) do |context, name|
+    begin
+      context.const_get(name)
+    rescue NameError
+      context.const_set(name, Module.new)
+    end
+  end
+end
+
+???? Describe how this works!
+
+Simple stub speed:
+
+Finished in 0.000837 seconds.
+
+stub_module speed:
+
+Finished in 0.000874 seconds.
+
+Just requiring active model....
+
+Finished in 0.000844 seconds.
+
+Hmm....
+
+
+
+
+
+

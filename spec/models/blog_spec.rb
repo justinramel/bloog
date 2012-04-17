@@ -1,6 +1,6 @@
 require 'minitest/autorun'
-require_relative '../../app/models/blog'
 require 'ostruct'
+require_relative '../../app/models/blog'
 
 describe Blog do
   before do
@@ -13,7 +13,7 @@ describe Blog do
 
   describe "#new_post" do
     before do
-      @new_post       = OpenStruct.new
+      @new_post = OpenStruct.new
       @it.post_source = -> {@new_post}
     end
 

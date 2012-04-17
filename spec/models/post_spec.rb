@@ -1,3 +1,13 @@
+# module ActiveModel
+#   module Naming; end
+#   module Conversion; end
+# end
+
+# require_relative '../spec_helper_lite'
+# stub_module 'ActiveModel::Conversion'
+# stub_module 'ActiveModel::Naming'
+
+require 'active_model'
 require 'minitest/autorun'
 require_relative '../../app/models/post'
 
@@ -28,8 +38,8 @@ describe Post do
   end
 
   it "supports reading and writing a blog reference" do
-    blog     = Object.new
-    @it.blog = blog
+    blog      = Object.new
+    @it.blog  = blog
     @it.blog.must_equal blog
   end
 
