@@ -8,12 +8,16 @@
 </head>
 <body>
 
-<% if flash[:alert] %>
-  <p class="flash-error"><%= flash[:alert] %></p>
-<% end %>
-<% if flash[:notice] %>
-  <p class="flash-notice"><%= flash[:notice] %></p>
-<% end %>
+<div class="container">
+  <div class="banner sixteen columns clearfix">
+    <% if flash[:notice] %>
+      <p class="notice"><%= flash[:notice] %></p>
+    <% end %>
+    <% if flash[:error] %>
+      <p class="error"><%= flash[:error] %></p>
+    <% end %>
+  </div>
+</div>
 
 <%= yield %>
 

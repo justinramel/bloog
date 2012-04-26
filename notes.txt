@@ -79,8 +79,86 @@ Finished in 0.000844 seconds.
 
 Hmm....
 
+--------------------------------------------------------------------------------
+27th APRIL
 
+Adding Timestamps
+=================
 
+Outside in again starting at view and working our way in.
 
+https://gist.github.com/7937366575c589de10d2
 
+NOTE: Time cop version not using injected time
+----------------------------------------------
+    describe "after publishing" do
+      before do
+        @now = DateTime.parse("2011-09-11T02:56")
+        Timecop.freeze(@now)
 
+        @it.blog = stub!
+        @it.publish
+      end
+
+      it "is a datetime" do
+        @it.pubdate.must_equal(@now)
+      end
+
+      after do
+        Timecop.return
+      end
+    end
+
+OMG Dependancy injection
+========================
+
+Poor mans!
+
+Delayed post a reason to use parameter injection? No code changes. Open closed
+principal.
+
+""
+Our tests influenced us to factor out the responsibility for determining a post’s timestamp into a discrete object. By letting our discipline of test isolation drive our design, we arrived at a system that respects SRP without even really thinking about it.
+""
+
+Injecting only the dependencies we need
+=======================================
+You might have wondered why we inject a callable @post_source instead of simply having a @post_class variable which defaults to Post.
+YES I WAS!
+
+Oh by the way, that post_source? It’s a factory, as in “the Factory pattern”. I didn’t want to scare you off with big pattern talk, so I snuck it in under an assumed name ;-)
+
+Sorting and limiting posts
+==========================
+Back to tdd
+
+def entries
+  @entries.sort_by{|e| e.pubdate}.reverse.take(10)
+end
+
+Nice and all pure ruby!
+
+Now that we’re using ActiveModel to satisfy our own expectations as well as Rails’ expectations, we can no longer stub out the ActiveModel modules when running in isolation. We must use the real thing.
+These lines will have to go:
+stub_module ’ActiveModel::Conversion’
+stub_module ’ActiveModel::Naming’
+
+SO WE COULD HAVE JUST DONE THIS IN THE FIRST PLACE?
+
+By explicitly requiring ActiveModel only in files which need it, we don’t saddle unrelated tests with the extra load time.
+
+WHAT LOAD TIME???????? Are we missing something here? Still running at:
+
+Finished in 0.047724 seconds.
+
+Adding Validation
+=================
+
+dont_allow - aliased with do_not_allow, dont_call, and do_not_call
+
+dont_allow sets an expectation on the Double that it will never be called. If the Double is called, then a TimesCalledError is raised.
+
+dont_allow(User).find('42')
+User.find('42') # raises a TimesCalledError
+
+NOTE::My post spec pubdate specs stopped working at this point did yours???
